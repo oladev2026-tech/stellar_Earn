@@ -5,6 +5,8 @@ import React, {
   useContext,
   useState,
   useCallback,
+  useRef,
+  useEffect,
   ReactNode,
 } from 'react';
 import { NotificationType } from '../../lib/utils/notifications';
@@ -35,9 +37,19 @@ export const ToastProvider: React.FC<{ children: ReactNode }> = ({
   children,
 }) => {
   const [toasts, setToasts] = useState<Toast[]>([]);
+  const toastsRef = useRef<Toast[]>([]);
+
+  useEffect(() => {
+    toastsRef.current = toasts;
+  }, [toasts]);
 
   const showToast = useCallback(
     (message: string, type: NotificationType = 'info') => {
+      // Deduplicate toasts with the same message and type
+      if (toastsRef.current.some((t) => t.message === message && t.type === type)) {
+        return;
+      }
+
       const id = Math.random().toString(36).substring(2, 9);
       setToasts((prev) => [...prev, { id, type, message }]);
 
