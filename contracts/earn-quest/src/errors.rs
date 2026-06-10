@@ -111,7 +111,6 @@ pub enum Error {
     DisputeAlreadyAppealed = 87,
     DisputeNotResolved = 95,
 
-
     // Additional validation / escrow
     InvalidDeadline = 88,
     QuestCancelled = 89,
@@ -145,6 +144,3 @@ pub enum Error {
     // Payout Errors
     InvalidClaimAmount = 143,
 }
-
-
-

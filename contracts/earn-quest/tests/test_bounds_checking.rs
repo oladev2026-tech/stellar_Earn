@@ -44,7 +44,6 @@ fn test_batch_quest_registration_valid_bounds() {
             verifier: verifier.clone(),
             deadline,
         });
-
     }
 
     // Should succeed - all indices are valid
@@ -207,7 +206,6 @@ fn test_single_item_batch_operations() {
         verifier: verifier.clone(),
         deadline,
     });
-
 
     client.register_quests_batch(&creator, &quests);
 

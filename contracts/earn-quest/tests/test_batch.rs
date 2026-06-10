@@ -3,7 +3,7 @@
 use soroban_sdk::testutils::Events as _;
 use soroban_sdk::token::{StellarAssetClient, TokenClient};
 use soroban_sdk::{
-    symbol_short, testutils::Address as _, Address, BytesN, Env, IntoVal, Symbol, Vec, String,
+    symbol_short, testutils::Address as _, Address, BytesN, Env, IntoVal, Symbol, Vec, String, TryFromVal, FromVal,
 };
 
 extern crate earn_quest;

@@ -330,13 +330,12 @@ pub fn approve_submissions_batch(
 
     // Pre-validate all addresses to fail fast
     for i in 0u32..len {
-        let s = submissions.get(i).unwrap();
+        let s = submissions.get(i).ok_or(Error::IndexOutOfBounds)?;
         for j in 0u32..s.submissions.len() {
-            let submitter = s.submissions.get(j).unwrap();
+            let submitter = s.submissions.get(j).ok_or(Error::IndexOutOfBounds)?;
             validation::validate_addresses_distinct(verifier, &submitter)?;
         }
     }
-
 
     // Cache quest and escrow data to avoid redundant reads
     let mut cached_quest_id: Option<Symbol> = None;
@@ -344,7 +343,7 @@ pub fn approve_submissions_batch(
     let mut cached_escrow: Option<crate::types::EscrowInfo> = None;
 
     for i in 0u32..len {
-        let batch = submissions.get(i).unwrap();
+        let batch = submissions.get(i).ok_or(Error::IndexOutOfBounds)?;
         let quest_id = &batch.quest_id;
 
         // Reuse quest data if same quest as previous iteration
@@ -368,7 +367,7 @@ pub fn approve_submissions_batch(
         }
 
         for j in 0u32..batch.submissions.len() {
-            let submitter = batch.submissions.get(j).unwrap();
+            let submitter = batch.submissions.get(j).ok_or(Error::IndexOutOfBounds)?;
 
             // Single read of submission; will be updated directly
             let mut submission = storage::get_submission(env, quest_id, &submitter)?;
