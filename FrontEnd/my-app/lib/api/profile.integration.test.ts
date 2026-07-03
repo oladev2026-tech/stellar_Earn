@@ -33,9 +33,9 @@ describe('Profile API Integration Tests', () => {
       http.get(`${API_BASE_URL}/api/v1/profiles/:address`, () => {
         return HttpResponse.json(
           { message: 'Internal server error' },
-          { status: 500 },
+          { status: 500 }
         );
-      }),
+      })
     );
 
     await expect(fetchUserProfile(TEST_ADDRESS)).rejects.toThrow();
