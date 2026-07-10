@@ -11,7 +11,6 @@ import { CreateQuestDto } from './dto/create-quest.dto';
 import { UpdateQuestDto } from './dto/update-quest.dto';
 import { QueryQuestsDto } from './dto/query-quests.dto';
 
-import { QuestResponseDto } from './dto/quest-response.dto';
 import { PaginatedQuestsResponseDto } from './dto/quest-response.dto';
 import { QuestMapper } from './mappers/quest.mapper';
 class QuestCreatedEvent {

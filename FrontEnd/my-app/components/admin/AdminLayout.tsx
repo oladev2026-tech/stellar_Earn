@@ -30,7 +30,7 @@ export default function AdminLayout({ children, user }: AdminLayoutProps) {
         </div>
         <div className="flex items-center gap-4">
           <ThemeToggle />
-          {user && <span className="text-sm font-medium text-zinc-600 dark:text-zinc-400">{user.email}</span>}
+          {user && <span className="text-sm font-medium text-zinc-600 dark:text-zinc-400">{user.username}</span>}
         </div>
       </header>
 
