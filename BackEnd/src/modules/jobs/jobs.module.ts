@@ -1,5 +1,6 @@
 import { Module, forwardRef } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { HttpClientModule } from '../../common/http-client/http-client.module';
 import { EventEmitterModule } from '@nestjs/event-emitter';
 import { JobsService } from './jobs.service';
 import { JobsController } from './jobs.controller';
@@ -55,6 +56,7 @@ import { IdempotencyService } from '../payouts/services/idempotency.service';
       IdempotencyKey,
     ]),
     EventEmitterModule,
+    HttpClientModule,
     StellarModule,
     AnalyticsModule,
     forwardRef(() => EmailModule),

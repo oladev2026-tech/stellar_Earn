@@ -7,4 +7,4 @@ and this module adheres to [Semantic Versioning](https://semver.org/).
 ## [Unreleased]
 
 ### Changed
-- Code formatting and improved type signature readability in HealthController
+- `ExternalHealthService` now uses `PooledHttpClientService` (keep-alive connection pool, 3 s `short` timeout budget) instead of ad-hoc `axios` calls for Stellar Horizon and SendGrid health checks. `HttpClientModule` added to `HealthModule` imports.
