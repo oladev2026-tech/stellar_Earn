@@ -138,10 +138,7 @@ export class WebhooksService {
         traceId: currentTraceId(),
       };
     } catch (error) {
-      this.logger.error(
-        `Failed to process webhook ${event.id}:`,
-        error.stack,
-      );
+      this.logger.error(`Failed to process webhook ${event.id}:`, error.stack);
       return {
         success: false,
         eventId: event.id,
@@ -263,21 +260,23 @@ export class WebhooksService {
     }
   }
 
+  /** @returns `true` when the record was moved to the dead-letter state. */
   private applyFailureOutcome(
     record: FailedWebhookEvent,
     retryable: boolean,
     now: Date,
-  ): void {
+  ): boolean {
     if (!retryable || record.attempts >= record.maxAttempts) {
       record.status = FailedWebhookStatus.DEAD_LETTER;
       record.nextRetryAt = null;
-      return;
+      return true;
     }
 
     record.status = FailedWebhookStatus.PENDING;
     record.nextRetryAt = new Date(
       now.getTime() + computeWebhookBackoffDelayMs(record.attempts),
     );
+    return false;
   }
 
   /**
@@ -364,14 +363,14 @@ export class WebhooksService {
       ...(record.errorHistory ?? []),
       { error: response.message, attemptedAt: now.toISOString() },
     ];
-    this.applyFailureOutcome(
+    const deadLettered = this.applyFailureOutcome(
       record,
       this.isRetryableFailure(response.message),
       now,
     );
     await this.failedWebhookRepository.save(record);
 
-    if (record.status === FailedWebhookStatus.DEAD_LETTER) {
+    if (deadLettered) {
       this.logger.warn(
         `Webhook ${eventId} moved to dead-letter after ${record.attempts} attempt(s): ${response.message}`,
       );
@@ -392,9 +391,7 @@ export class WebhooksService {
   }
 
   /** Fetches the most recent failed-webhook record for a given event ID. */
-  async getFailedWebhook(
-    eventId: string,
-  ): Promise<FailedWebhookEvent | null> {
+  async getFailedWebhook(eventId: string): Promise<FailedWebhookEvent | null> {
     return this.failedWebhookRepository.findOne({
       where: { eventId },
       order: { createdAt: 'DESC' },

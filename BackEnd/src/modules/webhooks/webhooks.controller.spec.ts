@@ -374,9 +374,7 @@ describe('WebhooksController', () => {
       const result = await controller.retryFailedWebhook('evt-1');
 
       expect(result).toEqual({ success: true, eventId: 'evt-1' });
-      expect(webhooksService.retryFailedWebhook).toHaveBeenCalledWith(
-        'evt-1',
-      );
+      expect(webhooksService.retryFailedWebhook).toHaveBeenCalledWith('evt-1');
     });
 
     it('should return success=false when the retry fails or is exhausted', async () => {

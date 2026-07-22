@@ -11,9 +11,7 @@ import {
 describe('FailedWebhookRetryScheduler', () => {
   let scheduler: FailedWebhookRetryScheduler;
   let repo: jest.Mocked<Repository<FailedWebhookEvent>>;
-  let webhooksService: jest.Mocked<
-    Pick<WebhooksService, 'retryFailedWebhook'>
-  >;
+  let webhooksService: jest.Mocked<Pick<WebhooksService, 'retryFailedWebhook'>>;
 
   const buildRecord = (
     overrides: Partial<FailedWebhookEvent> = {},
